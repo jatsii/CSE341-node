@@ -1,0 +1,11 @@
+{
+  "name": "lesson1-cse341",
+  "version": "1.0.0",
+  "description": "publish api to the web",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jatsiri Martinez",
+  "license": "ISC"
+}
