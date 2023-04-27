@@ -1,7 +1,9 @@
 const {MongoClient} = require('mongodb');
+const dotenv = require("dotenv");
+dotenv.config();
 
 async function main(){
-    const uri ="mongodb+srv://jatsiMongo:jatsiMongoDb@atlascluster.hquv5g1.mongodb.net/?retryWrites=true&w=majority";
+    const uri =`mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@atlascluster.hquv5g1.mongodb.net/?retryWrites=true&w=majority`;
 
     const client = new MongoClient(uri);
 
