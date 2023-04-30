@@ -2,14 +2,15 @@ const {MongoClient} = require('mongodb');
 const dotenv = require("dotenv");
 dotenv.config();
 
+const uri = process.env.MONGO_URI;
+const client = new MongoClient(uri);
+
 let coll;
 
 //conect with mongo
 async function main(){
     try{
-        const uri = process.env.MONGO_URI;
-        const client = new MongoClient(uri);
-
+        
         const connection = await client.connect();
 
         const db = connection.db("cs341-Week2-Contacts");
