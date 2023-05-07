@@ -1,4 +1,5 @@
 const {MongoClient} = require('mongodb');
+const ObjectId = require('mongodb').ObjectId;
 const dotenv = require("dotenv");
 dotenv.config();
 
@@ -14,13 +15,78 @@ async function main(){
         const connection = await client.connect();
 
         const db = connection.db("cs341-Week2-Contacts");
-        coll = await db.collection("contacts");
+        const coll = db.collection("contacts");
 
-        const cursor = coll.find();
+        app.set('view engine', 'ejs')
 
-        await cursor.forEach(console.log); 
+        //Create a collection
+        app.post('/contacts', (req, res) => {
+            coll
+            .insertOne(req.body)
+            .then(result => {
+                console.log(result)
+            })
+            .catch(error =>console.error(error))
+            //console.log(req.body)
+          })
 
+          //Get All Contacts
+          app.get('/', (req, res) => {
+            coll
+                .find()
+                .toArray()
+                .then(results => {
+                    res.render('index.ejs', { contacts: results })
+                })
+                .catch(error => console.error(error))
+            })
 
+            //Get single contact
+            app.get('/:id', async(req, res, next)=> {
+
+                const userId = new ObjectId(req.params.id)
+            
+                let contact = await coll.find({_id: userId}).limit(60).toArray()
+                res.send(contact).status(200); 
+            })
+
+            //Update Contact
+            app.put('/:id', async (req, res) =>{
+                
+                const userId = new ObjectId(req.params.id)
+                const contact = {
+                    firstName: req.body.firstName,
+                    lastName: req.body.lastName,
+                    email: req.body.email,
+                    favoriteColor: req.body.favoriteColor,
+                    birthday: req.body.birthday
+                  }
+
+                  const response = await coll.findAndUpdate({ _id: userId }, contact)
+
+                    console.log(response)
+                    if (response.modifiedCount > 0) {
+                        res.status(204).send()
+                    } else {
+                        res.status(500).json(response.error)
+                    }
+            })
+            
+            //Delete Contact
+            app.delete('/:id', async (req, res) =>{
+
+                const userId = new ObjectId(req.params.id);
+                const response = await coll.deleteOne({ _id: userId }, true)
+
+                console.log(response)
+
+                if (response.deletedCount > 0) {
+                    res.status(204).send();
+                } else {
+                    res.status(500).json(response.error)
+                }
+            })    
+        
     }catch(e){
         console.error(e);
     }
@@ -35,22 +101,10 @@ const app = express();
 
 const port = 3000;
 
+app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json());
 app.use(express.json());
-
-//Get all documents
-app.get('/', async(req, res)=> {
-
-    let contact = await coll.find().limit(60).toArray();
-    res.send(contact).status(200);
-});
-
-//Get single document
-app.get('/getOne', async(req, res)=> {
-   
-    let contact = await coll.findOne({id:3});//.limit(60).toArray();
-    res.send(contact).status(200);  
-});
+app.use(express.static('public'));
 
 
 app.listen(process.env.port || port);

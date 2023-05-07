@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Star Wars Quote App</title>
+  </head>
+
+  <body>
+    <h1>Create a contact</h1>
+
+    <form action="/contacts" method="POST">
+        <input type="text" placeholder="First Name" name="firstName" />
+        <input type="text" placeholder="Last Name" name="lastName" />
+        <input type="text" placeholder="E-mail" name="email" />
+        <input type="text" placeholder="Favorite Color" name="favoriteColor" />
+        <input type="text" placeholder="Birthday" name="birthday" />
+        <button type="submit">Submit</button>
+      </form>
+
+    <h1>Get All Contacts</h1>
+        <table class="table">
+            <thead>
+                <tr>   
+                <th scope="col">First Name</th>
+                <th scope="col">Last Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Favorite Color</th>
+                <th scope="col">Brithday</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for(var i = 0; i < contacts.length; i++) {%>
+                <tr>
+                    <td><%= contacts[i].firstName %> </td>
+                    <td><%= contacts[i].lastName %> </td>
+                    <td><%= contacts[i].email %> </td>
+                    <td><%= contacts[i].favoriteColor %> </td>
+                    <td><%= contacts[i].birthday %> </td>
+                </tr>
+                <% } %>
+            </tbody>
+        </table>
+        
+    <% for(var i = 0; i < contacts.length; i++) { %>     
+    <h2>Update and Delete <%= contacts[i].firstName %></h2>
+        <form id="edit" data-id="<%= contacts[i]._id %>" >
+            <input type="text" placeholder="<%= contacts[i].firstName %>" name="firstName" />
+            <input type="text" placeholder="<%= contacts[i].lastName %>" name="lastName" />
+            <input type="text" placeholder="<%= contacts[i].email %>" name="email" />
+            <input type="text" placeholder="<%= contacts[i].favoriteColor %>" name="favoriteColor" />
+            <input type="text" placeholder="<%= contacts[i].birthday %>" name="birthday" />
+            <button id="update" type="submit">Update</button>
+        </form>
+    
+        <table class="table">
+            <thead>
+                <tr>
+                <th scope="col">First Name</th>
+                <th scope="col">Last Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Favorite Color</th>
+                <th scope="col">Brithday</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><%= contacts[i].firstName %> </td>
+                    <td><%= contacts[i].lastName %> </td>
+                    <td><%= contacts[i].email %> </td>
+                    <td><%= contacts[i].favoriteColor %> </td>
+                    <td><%= contacts[i].birthday %> </td>
+                    <td><button class="delete" data-id="<%= contacts[i].id %>"> Delete </button> </td>
+                </tr>
+            </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+    <% } %>
+
+    <script type="text/javascript">
+
+        //Update Contact
+        const formUpdate = document.querySelector('#edit');
+
+        formUpdate.addEventListener('submit', _ =>  {
+
+            const firstName = formUpdate.elements['firstName'].value
+            const lastName = formUpdate.elements['lastName'].value
+            const email = formUpdate.elements['email'].value
+            const favoriteColor = formUpdate.elements['favoriteColor'].value
+            const birthday = formUpdate.elements['birthday'].value
+            const id = formUpdate.dataset.id
+            console.log(id);
+
+            fetch(`/${id}`, {
+                    method: 'put',
+                    headers: {'Content-Type' : 'application/json; charset=UTF-8'},
+                    body: JSON.stringify({
+                        firstName: firstName,
+                        lastName: lastName,
+                        email: email,
+                        favoriteColor: favoriteColor,
+                        birthday: birthday
+                    }),
+                    
+            })
+        })
+
+        //Delete Contact
+        const contactDelete = document.querySelector('.delete')
+
+        contactDelete.addEventListener('onClick', _ => {
+                fetch(`/contacts/${contactDelete.dataset.id}`,{
+                    method: 'delete'
+                })
+            
+
+        })
+    </script>     
+  </body>
+</html>
