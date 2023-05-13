@@ -1,3 +1,30 @@
-GET http://localhost:3000/
-###
-GET http://localhost:3000/getOne
+## Get contacts
+GET http://localhost:3000/contacts
+
+##Get single contact by Id
+GET http://localhost:3000/contacts/644c2c90a30065d9e38d5cb5
+
+### Create contact
+POST http://localhost:3000/contacts HTTP/1.1
+content-type: application/json
+{
+    "firstName":"Detzani",
+    "lastName":"Hernandez",
+    "email":"detzani@hotmail.com",
+    "favoriteColor":"green",
+    "birthday":"11/11/1996"
+}
+### PUT contact
+PUT http://localhost:8080/contacts/64573f7f6db5a5ab61e22057 HTTP/1.1
+content-type: application/json
+
+{
+    "firstName":"Sazil-Ha",
+    "lastName":"Ramos",
+    "email":"sazil@gmail.com",
+    "favoriteColor":"pink",
+    "birthday":"21/09/1993"
+}
+### DELETE contact
+DELETE http://localhost:8080/contacts/6455d0b41bcb978a9e1fb888 HTTP/1.1
+

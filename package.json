@@ -2,11 +2,12 @@
   "name": "lesson1-cse341",
   "version": "1.0.0",
   "description": "publish api to the web",
-  "main": "contacts.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon contacts.js",
-    "start-prod": "node contacts.js"
+    "start": "nodemon server.js",
+    "start-prod": "node server.js",
+    "swagger-autogen": "node swagger.js"
   },
   "author": "Jatsiri Martinez",
   "license": "ISC",
@@ -14,9 +15,11 @@
     "dotenv": "^16.0.3",
     "ejs": "^3.1.9",
     "express": "^4.18.2",
-    "mongodb": "^5.3.0"
+    "mongodb": "^5.3.0",
+    "swagger-ui-express": "^4.6.3"
   },
   "devDependencies": {
-    "nodemon": "^2.0.22"
+    "nodemon": "^2.0.22",
+    "swagger-autogen": "^2.23.1"
   }
 }
