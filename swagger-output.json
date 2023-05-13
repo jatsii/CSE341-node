@@ -7,20 +7,8 @@
   },
   "host": "jatsi341-assignment3.onrender.com",
   "basePath": "/",
-  "tags": [
-    {
-      "name": "Contacts",
-      "description": "Endpoints"
-    }
-  ],
   "schemes": [
     "https"
-  ],
-  "consumes": [
-    "application/json"
-  ],
-  "produces": [
-    "application/json"
   ],
   "paths": {
     "/contacts/": {
